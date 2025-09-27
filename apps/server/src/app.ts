@@ -40,7 +40,7 @@ app.use("*", async (c, next) => {
 	return next();
 });
 
-app.use("/*", authMiddleware);
+app.use("/posts", authMiddleware);
 
 app.use(
 	rateLimiter({
@@ -51,6 +51,7 @@ app.use(
 );
 
 app.route("/posts", appRouter.postRoutes);
+app.route("/public", appRouter.publicRoutes);
 
 app.get("/:id", (c) => {
 	const user = c.get("user");
