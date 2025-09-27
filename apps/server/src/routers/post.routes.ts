@@ -12,9 +12,9 @@ import { PostService } from "@/modules/post/post.service";
 
 export const postRoutes = new Hono();
 
-const postRepository = new PostRepository(db);
-const postService = new PostService(postRepository);
-const postController = new PostController(postService);
+export const postRepository = new PostRepository(db);
+export const postService = new PostService(postRepository);
+export const postController = new PostController(postService);
 
 postRoutes.post(
 	"/post/create",
@@ -33,7 +33,3 @@ postRoutes.delete(
 	zValidator("param", deletePostSchema),
 	postController.deletePost,
 );
-
-postRoutes.get("/post/:id", postController.getPost);
-
-postRoutes.get("/all", postController.getAllPosts);
