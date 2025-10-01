@@ -1,8 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+<<<<<<< HEAD
 @plugin "@tailwindcss/typography";
 
+=======
+>>>>>>> 6b7ea91 (update(web): implemented new colors, styling and fonts.)
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -147,6 +150,7 @@
   --shadow-2xl: var(--shadow-2xl);
 }
 
+<<<<<<< HEAD
 @utility prose-theme {
   --tw-prose-body: var(--foreground);
   --tw-prose-headings: var(--foreground);
@@ -184,6 +188,8 @@
   --tw-prose-invert-td-borders: var(--border);
 }
 
+=======
+>>>>>>> 6b7ea91 (update(web): implemented new colors, styling and fonts.)
 @layer base {
   * {
     @apply border-border outline-ring/50 ;
@@ -194,11 +200,15 @@
   }
 
   body {
+<<<<<<< HEAD
     @apply bg-background text-foreground font-mono scroll-smooth selection:bg-foreground/20 ;
   }
 
   a {
       @apply cursor-pointer;
+=======
+    @apply bg-background text-foreground font-mono scroll-smooth;
+>>>>>>> 6b7ea91 (update(web): implemented new colors, styling and fonts.)
   }
 }
 
@@ -219,6 +229,11 @@
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-muted rounded-full;
   }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6b7ea91 (update(web): implemented new colors, styling and fonts.)
 }
 
 
