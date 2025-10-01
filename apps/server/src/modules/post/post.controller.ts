@@ -48,6 +48,8 @@ export class PostController {
 
 		const post = await this.postService.getPost({ id });
 
+		if (!post) return c.json({ message: "Post not found" }, 404);
+
 		return c.json(post, 200);
 	};
 
