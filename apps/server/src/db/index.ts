@@ -1,5 +1,10 @@
-import { neon } from "@neondatabase/serverless";
+import "dotenv/config";
+import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
+import ws from "ws";
+
+neonConfig.webSocketConstructor = ws;
+neonConfig.fetchConnectionCache = true;
 
 if (!process.env.DATABASE_URL)
 	throw new Error("Missing DATABASE_URL variable!");
