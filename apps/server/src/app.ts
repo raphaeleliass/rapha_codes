@@ -43,9 +43,31 @@ app.use("*", async (c, next) => {
 app.use("/posts", authMiddleware);
 
 app.use(
+	"/api/auth/*",
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
-		limit: 10,
+		limit: 5,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
+	}),
+);
+
+app.use(
+	"/public/*",
+	rateLimiter({
+		windowMs: 1 * 60 * 1000,
+		limit: 60,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
+	}),
+);
+
+app.use(
+	"/posts/*",
+	rateLimiter({
+		windowMs: 15 * 60 * 1000,
+		limit: 60,
+		standardHeaders: "draft-6",
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
 );
