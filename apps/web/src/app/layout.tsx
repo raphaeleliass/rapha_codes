@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "../index.css";
-import Header from "@/components/header";
 import Providers from "@/components/providers";
+import "./global.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
+const geist = Geist({
+	subsets: ["latin", "latin-ext"],
+	variable: "--font-geist",
+	display: "swap",
 });
-
 const geistMono = Geist_Mono({
+	subsets: ["latin", "latin-ext"],
 	variable: "--font-geist-mono",
-	subsets: ["latin"],
+	display: "swap",
 });
 
 export const metadata: Metadata = {
-	title: "rapha_codes",
-	description: "rapha_codes",
+	title: "RaphaCodes",
+	description:
+		"Meu blog pessoal sobre desenvolvimento web. Aqui compartilho ideias, aprendizados, soluções e os desafios reais do dia a dia como dev fullstack.",
 };
 
 export default function RootLayout({
@@ -25,16 +26,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
-				<Providers>
-					<div className="grid h-svh grid-rows-[auto_1fr]">
-						<Header />
-						{children}
-					</div>
-				</Providers>
+		<html lang="pt-BR" data-scroll-behavior="smooth" suppressHydrationWarning>
+			<body className={`${geist.variable} ${geistMono.variable} antialiased`}>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);
