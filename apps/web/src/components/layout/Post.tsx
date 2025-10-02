@@ -23,7 +23,7 @@ export default function Post({ post }: { post: PostType }) {
 		getUser();
 	}, []);
 
-	if (!user) false;
+	if (!user) return null;
 
 	return (
 		<section className="custom-container min-h-dvh py-20">
@@ -50,7 +50,7 @@ export default function Post({ post }: { post: PostType }) {
 					</div>
 				</div>
 
-				<Editor content={post.content} editable={user ? true : false} />
+				<Editor content={post.content} editable={!!user} />
 			</article>
 		</section>
 	);
