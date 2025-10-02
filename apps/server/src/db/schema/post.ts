@@ -3,6 +3,7 @@ import { user } from "./auth";
 
 export const post = pgTable("post", {
 	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	authorImg: text("author_img").notNull(),
 	author: text().notNull(),
 	title: text().notNull(),
 	content: text().notNull(),
