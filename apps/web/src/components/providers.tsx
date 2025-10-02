@@ -1,7 +1,7 @@
 "use client";
 
+import Navbar from "./layout/Navbar";
 import { ThemeProvider } from "./theme-provider";
-import { Toaster } from "./ui/sonner";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
 	return (
@@ -11,8 +11,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 			enableSystem
 			disableTransitionOnChange
 		>
+			<Navbar />
 			{children}
-			<Toaster richColors />
 		</ThemeProvider>
 	);
 }
