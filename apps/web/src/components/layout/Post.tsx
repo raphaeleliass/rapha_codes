@@ -27,30 +27,23 @@ export default function Post({ post }: { post: PostType }) {
 
 	return (
 		<section className="custom-container min-h-dvh py-20">
-			<article className="flex w-full flex-col gap-7 font-sans">
-				<h1 className="mx-auto text-balance text-center font-bold text-3xl md:max-w-2/3 md:text-4xl">
-					{post.title}
-				</h1>
-
-				<div className="mx-auto space-y-2 max-sm:max-w-1/2">
-					<p className="text-center text-muted-foreground max-sm:mx-auto max-sm:text-xs">
-						escrito por
-					</p>
-					<div className="flex flex-row-reverse items-center gap-4">
-						<p className="text-sm">{post.author}</p>
-						<Image
-							src={post.author_img as string}
-							alt={`foto de ${user?.name}`}
-							height={30}
-							width={30}
-							quality={75}
-							priority={false}
-							className="h-auto w-auto rounded-full object-cover object-center"
-						/>
+			<article className="font-sans">
+				<div className="mx-auto flex w-full flex-col gap-8 md:max-w-2/3">
+					<div className="mr-auto text-muted-foreground">
+						<p className="text-sm"> {post.author}</p>
+						<p className="font-light text-xs">
+							{new Date(post.createdAt).toLocaleString("pt-BR", {
+								day: "2-digit",
+								month: "2-digit",
+								year: "2-digit",
+								hour: "2-digit",
+								minute: "2-digit",
+							})}
+						</p>
 					</div>
+					<h1 className="text-balance text-5xl">{post.title}</h1>
+					<Editor content={post.content} editable={!!user} />
 				</div>
-
-				<Editor content={post.content} editable={!!user} />
 			</article>
 		</section>
 	);
