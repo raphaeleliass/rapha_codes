@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type PostType = {
 	id: string;
-	author_img: string;
+	authorImg: string;
 	author: string;
 	title: string;
 	content: string;
