@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import FetchAllPosts from "@/app/actions/fetchAllPosts";
+import FetchAllPosts from "@/actions/fetchAllPosts";
 import Post from "@/components/layout/Post";
 import type { PostType } from "@/store/usePostStore";
 
@@ -12,11 +12,9 @@ export default async function Page({
 }) {
 	const { slug } = await params;
 
-	const data: PostType[] = await FetchAllPosts({
-		revalidate: 60,
-	});
+	const data: PostType[] = await FetchAllPosts();
 
-	const post = data.find((post) => post.id === slug);
+	const post = data.find((post) => post.id === slug && !post.draft);
 
 	if (!post) return notFound();
 
