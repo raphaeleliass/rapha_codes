@@ -166,7 +166,7 @@
   --tw-prose-td-borders: var(--border);
 
   /* invert para dark mode */
-  --tw-prose-invert-body: var(--muted-foreground);
+  --tw-prose-invert-body: var(--foreground);
   --tw-prose-invert-headings: var(--foreground);
   --tw-prose-invert-lead: var(--muted-foreground);
   --tw-prose-invert-links: var(--primary-foreground);
@@ -194,7 +194,11 @@
   }
 
   body {
-    @apply bg-background text-foreground font-mono scroll-smooth selection:bg-foreground selection:text-background;
+    @apply bg-background text-foreground font-mono scroll-smooth selection:bg-foreground/20 ;
+  }
+
+  a {
+      @apply cursor-pointer;
   }
 }
 
