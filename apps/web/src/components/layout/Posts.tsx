@@ -1,20 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
-import { serverUrl } from "@/constants";
-import { authClient } from "@/lib/auth-client";
 import { type PostType, usePostStore } from "@/store/usePostStore";
 import { Button } from "../ui/button";
 
-export default function Posts({ posts }: { posts: PostType[] }) {
-	const { posts: postStore, setPosts } = usePostStore();
+export default function Posts() {
+	const { posts: postStore } = usePostStore();
 
-	useEffect(() => {
-		setPosts(posts);
-	}, [setPosts, posts]);
+	const postData = postStore.filter((post) => !post.draft);
 
-	const postsByMonth = postStore.reduce(
+	const postsByMonth = postData.reduce(
 		(acc, post) => {
 			const getDate = new Date(post.createdAt);
 			const key = getDate.toLocaleString("pt-BR", {
@@ -30,129 +25,52 @@ export default function Posts({ posts }: { posts: PostType[] }) {
 		{} as Record<string, PostType[]>,
 	);
 
-	async function postData() {
-		const post = {
-			author: (await authClient.getSession()).data?.user.name,
-			title: "meu post",
-			content: "conteudo do post",
-			draft: false,
-			author_img: (await authClient.getSession()).data?.user.image,
-		};
-
-		const response = await fetch(`${serverUrl}/posts/post/create`, {
-			method: "POST",
-			credentials: "include",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(post),
-		});
-
-		const data = await response.json();
-		return data;
-	}
-
 	return (
 		<section>
-			{posts.length <= 0 ? (
-				<div className="relative h-dvh justify-items-center">
-					<p className="fixed top-44">Nenhum post</p>
-					<Button
-						onClick={async () =>
-							await authClient.signUp.email({
-								name: "Raphael Elias",
-								username: "raphael",
-								email: "raphaeleliass@outlook.com",
-								password: "123123123",
-							})
-						}
-					>
-						cadastrar
-					</Button>
-					<Button
-						onClick={async () =>
-							await authClient.signIn.email({
-								email: "raphaeleliass@outlook.com",
-								password: "123123123",
-							})
-						}
-					>
-						entrar
-					</Button>
-					<Button onClick={postData}>postar</Button>
-				</div>
-			) : (
-				<div className="custom-container relative flex min-h-dvh gap-4 md:flex-row">
-					<div className="relative h-dvh justify-items-center">
-						<p className="fixed top-44">Nenhum post</p>
-						<Button
-							onClick={async () =>
-								await authClient.signUp.email({
-									name: "Raphael Elias",
-									username: "raphael",
-									email: "raphaeleliass@outlook.com",
-									password: "123123123",
-								})
-							}
-						>
-							cadastrar
-						</Button>
-						<Button
-							onClick={async () =>
-								await authClient.signIn.email({
-									email: "raphaeleliass@outlook.com",
-									password: "123123123",
-								})
-							}
-						>
-							entrar
-						</Button>
-						<Button onClick={postData}>postar</Button>
-					</div>
-					<div className="flex h-dvh w-2/3 flex-col max-sm:w-full md:pr-32">
-						{Object.entries(postsByMonth).map(([month, posts]) => (
-							<div className="w-full pt-12 md:pt-22" id={month} key={month}>
-								<h2 className="font-light font-sans text-2xl text-foreground">
-									{month.charAt(0).toUpperCase().concat(month.slice(1))}
-								</h2>
-								<div className="w-full max-w-xs md:max-w-2xl">
-									{posts.map((post) => (
-										<ul key={post.id} className="mt-4 list-inside list-disc">
-											<li className="space-y-2">
-												<Link
-													href={`/post/${post.id}`}
-													className="max-w-full p-0.5 text-muted-foreground text-sm underline-offset-2 hover:underline"
-												>
-													{post.title}
-												</Link>
-											</li>
-										</ul>
-									))}
-								</div>
+			<div className="custom-container relative flex min-h-dvh gap-4 md:flex-row">
+				<div className="flex h-dvh w-2/3 flex-col max-sm:w-full md:pr-32">
+					{Object.entries(postsByMonth).map(([month, posts]) => (
+						<div className="w-full pt-12 md:pt-22" id={month} key={month}>
+							<h2 className="font-light font-sans text-2xl text-foreground">
+								{month.charAt(0).toUpperCase().concat(month.slice(1))}
+							</h2>
+							<div className="w-full max-w-xs md:max-w-2xl">
+								{posts.map((post) => (
+									<ul key={post.id} className="mt-4 list-inside list-disc">
+										<li className="space-y-2">
+											<Link
+												href={`/post/${post.id}`}
+												className="max-w-full p-0.5 text-muted-foreground text-sm underline-offset-2 hover:underline"
+											>
+												{post.title}
+											</Link>
+										</li>
+									</ul>
+								))}
 							</div>
+						</div>
+					))}
+				</div>
+
+				<aside className="fixed top-37 right-0 h-1/2 w-1/3 border-muted border-l px-4 max-md:hidden">
+					<h2 className="font-light font-sans text-lg text-muted-foreground italic">
+						Nessa página
+					</h2>
+
+					<div className="custom-scrollbar mt-4 flex h-full flex-col overflow-y-scroll">
+						{Object.entries(postsByMonth).map(([month]) => (
+							<a href={`#${month}`} key={month}>
+								<Button
+									className="px-0 text-sky-600 underline hover:text-sky-500 dark:text-sky-500 hover:dark:text-sky-200"
+									variant={"link"}
+								>
+									{month.charAt(0).toUpperCase().concat(month.slice(1))}
+								</Button>
+							</a>
 						))}
 					</div>
-
-					<aside className="fixed top-37 right-0 h-1/2 w-1/3 border-muted border-l px-4 max-md:hidden">
-						<h2 className="font-light font-sans text-lg text-muted-foreground italic">
-							Nessa página
-						</h2>
-
-						<div className="custom-scrollbar mt-4 flex h-full flex-col overflow-y-scroll">
-							{Object.entries(postsByMonth).map(([month]) => (
-								<a href={`#${month}`} key={month}>
-									<Button
-										className="px-0 text-sky-600 underline hover:text-sky-500 dark:text-sky-500 hover:dark:text-sky-200"
-										variant={"link"}
-									>
-										{month.charAt(0).toUpperCase().concat(month.slice(1))}
-									</Button>
-								</a>
-							))}
-						</div>
-					</aside>
-				</div>
-			)}
+				</aside>
+			</div>
 		</section>
 	);
 }
