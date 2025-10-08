@@ -28,10 +28,4 @@ export const auth = betterAuth<BetterAuthOptions>({
 			maxAge: 5 * 60,
 		},
 	},
-	rateLimit: {
-		enabled: true,
-		window: 15 * 60,
-		max: 5,
-		storage: "memory",
-	},
 });

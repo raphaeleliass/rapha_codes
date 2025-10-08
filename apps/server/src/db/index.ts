@@ -4,7 +4,6 @@ import { drizzle } from "drizzle-orm/neon-http";
 import ws from "ws";
 
 neonConfig.webSocketConstructor = ws;
-neonConfig.fetchConnectionCache = true;
 
 if (!process.env.DATABASE_URL)
 	throw new Error("Missing DATABASE_URL variable!");
