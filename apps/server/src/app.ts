@@ -88,6 +88,7 @@ app.use(
 		windowMs: 15 * 60 * 1000,
 		limit: 60,
 		standardHeaders: "draft-6",
+
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
 );
