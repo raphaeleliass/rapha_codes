@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, LucideExternalLink } from "lucide-react";
+import { LucideExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
