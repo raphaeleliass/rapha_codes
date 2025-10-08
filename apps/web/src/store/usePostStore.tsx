@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export type PostType = {
 	id: string;
-	author_img: string;
+	authorImg: string;
 	author: string;
 	title: string;
 	content: string;
@@ -13,6 +13,8 @@ export type PostType = {
 
 type PostStore = {
 	posts: PostType[];
+	currentPost: PostType | null;
+	setCurrentPost: (post: PostType) => void;
 	setPosts: (posts: PostType[]) => void;
 	addPost: (post: PostType) => void;
 	updatePost: (post: PostType) => void;
@@ -24,6 +26,8 @@ type PostStore = {
 export const usePostStore = create<PostStore>((set) => ({
 	posts: [],
 	loading: false,
+	currentPost: null,
+	setCurrentPost: (currentPost) => set({ currentPost }),
 	setPosts: (posts) => set({ posts }),
 	addPost: (post) => set((state) => ({ posts: [...state.posts, post] })),
 	updatePost: (post) =>

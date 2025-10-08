@@ -1,12 +1,9 @@
 import { Loader } from "lucide-react";
 import { Suspense } from "react";
-import GetPosts from "@/app/actions/fetchAllPosts";
 import Posts from "./Posts";
 
 const PostsLoader = async () => {
-	const postsData = await GetPosts({ revalidate: 60 });
-
-	return <Posts posts={postsData} />;
+	return <Posts />;
 };
 
 export default function Home() {

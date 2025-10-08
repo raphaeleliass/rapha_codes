@@ -1,0 +1,176 @@
+pre code.hljs {
+	display: block;
+	overflow-x: auto;
+	padding: 1em;
+	border-radius: 0.5rem;
+}
+
+code.hljs {
+	padding: 3px 5px;
+	border-radius: 0.25rem;
+}
+
+/* ===== Base ===== */
+.hljs {
+	background: #ffffff;
+	color: #1e293b; /* slate-800 */
+}
+
+.dark .hljs {
+	background: #1a1b26;
+	color: #9aa5ce;
+}
+
+/* ===== Comments ===== */
+.hljs-meta,
+.hljs-comment {
+	color: #6b7280; /* gray-500 */
+}
+.dark .hljs-meta,
+.dark .hljs-comment {
+	color: #565f89;
+}
+
+/* ===== Red ===== */
+.hljs-tag,
+.hljs-doctag,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-template-tag,
+.hljs-selector-pseudo,
+.hljs-selector-attr,
+.hljs-variable.language_,
+.hljs-deletion {
+	color: #dc2626; /* red-600 */
+}
+.dark .hljs-tag,
+.dark .hljs-doctag,
+.dark .hljs-selector-id,
+.dark .hljs-selector-class,
+.dark .hljs-regexp,
+.dark .hljs-template-tag,
+.dark .hljs-selector-pseudo,
+.dark .hljs-selector-attr,
+.dark .hljs-variable.language_,
+.dark .hljs-deletion {
+	color: #f7768e;
+}
+
+/* ===== Orange ===== */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-number,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-link {
+	color: #ea580c; /* orange-600 */
+}
+.dark .hljs-variable,
+.dark .hljs-template-variable,
+.dark .hljs-number,
+.dark .hljs-literal,
+.dark .hljs-type,
+.dark .hljs-params,
+.dark .hljs-link {
+	color: #ff9e64;
+}
+
+/* ===== Yellow ===== */
+.hljs-built_in,
+.hljs-attribute {
+	color: #ca8a04; /* yellow-600 */
+}
+.dark .hljs-built_in,
+.dark .hljs-attribute {
+	color: #e0af68;
+}
+
+/* ===== Cyan ===== */
+.hljs-selector-tag {
+	color: #0891b2; /* cyan-600 */
+}
+.dark .hljs-selector-tag {
+	color: #2ac3de;
+}
+
+/* ===== Light Blue ===== */
+.hljs-keyword,
+.hljs-title.function_,
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.class_.inherited__,
+.hljs-subst,
+.hljs-property {
+	color: #0284c7; /* sky-600 */
+}
+.dark .hljs-keyword,
+.dark .hljs-title.function_,
+.dark .hljs-title,
+.dark .hljs-title.class_,
+.dark .hljs-title.class_.inherited__,
+.dark .hljs-subst,
+.dark .hljs-property {
+	color: #7dcfff;
+}
+
+/* ===== Green ===== */
+.hljs-quote,
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #16a34a; /* green-600 */
+}
+.dark .hljs-quote,
+.dark .hljs-string,
+.dark .hljs-symbol,
+.dark .hljs-bullet,
+.dark .hljs-addition {
+	color: #9ece6a;
+}
+
+/* ===== Blue ===== */
+.hljs-code,
+.hljs-formula,
+.hljs-section {
+	color: #2563eb; /* blue-600 */
+}
+.dark .hljs-code,
+.dark .hljs-formula,
+.dark .hljs-section {
+	color: #7aa2f7;
+}
+
+/* ===== Magenta ===== */
+.hljs-name,
+.hljs-operator,
+.hljs-keyword,
+.hljs-char.escape_,
+.hljs-attr {
+	color: #9333ea; /* purple-600 */
+}
+.dark .hljs-name,
+.dark .hljs-operator,
+.dark .hljs-keyword,
+.dark .hljs-char.escape_,
+.dark .hljs-attr {
+	color: #bb9af7;
+}
+
+/* ===== Punctuation ===== */
+.hljs-punctuation {
+	color: #334155; /* slate-700 */
+}
+.dark .hljs-punctuation {
+	color: #c0caf5;
+}
+
+/* ===== Emphasis ===== */
+.hljs-emphasis {
+	font-style: italic;
+}
+.hljs-strong {
+	font-weight: bold;
+}
