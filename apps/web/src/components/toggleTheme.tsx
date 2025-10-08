@@ -22,8 +22,8 @@ export default function ToggleTheme() {
 		<Button
 			onClick={toggleTheme}
 			className="overflow-hidden"
-			size={"sm"}
-			variant={"outline"}
+			size={"icon"}
+			variant={"secondary"}
 			aria-label="Mudar tema"
 			title="Mudar o tema"
 		>
