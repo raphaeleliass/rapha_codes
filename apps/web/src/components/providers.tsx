@@ -27,6 +27,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 		})();
 	}, [setUser]);
 
+	//biome-ignore lint: safe to let setPosts outside array of dependencies
 	useEffect(() => {
 		(async () => {
 			const postsData = await fetchAllPosts();

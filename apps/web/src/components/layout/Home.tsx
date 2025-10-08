@@ -1,7 +1,5 @@
 import { Loader } from "lucide-react";
 import { Suspense } from "react";
-import GetPosts from "@/actions/fetchAllPosts";
-import type { PostType } from "@/store/usePostStore";
 import Posts from "./Posts";
 
 const PostsLoader = async () => {
