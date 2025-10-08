@@ -16,9 +16,39 @@ app.use(
 	"/*",
 	cors({
 		origin: process.env.CORS_ORIGIN || "",
-		allowMethods: ["GET", "POST", "OPTIONS", "DELETE"],
+		allowMethods: ["GET", "POST", "OPTIONS", "DELETE", "PATCH"],
 		allowHeaders: ["Content-Type", "Authorization"],
 		credentials: true,
+	}),
+);
+
+app.use(
+	"/*",
+	rateLimiter({
+		windowMs: 15 * 60 * 1000,
+		limit: 100,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
+	}),
+);
+
+app.use(
+	"/api/auth/sign-in/email",
+	rateLimiter({
+		windowMs: 15 * 60 * 1000,
+		limit: 5,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
+	}),
+);
+
+app.use(
+	"/api/auth/*",
+	rateLimiter({
+		windowMs: 15 * 60 * 1000,
+		limit: 20,
+		standardHeaders: "draft-6",
+		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
 );
 
@@ -43,16 +73,6 @@ app.use("*", async (c, next) => {
 app.use("/posts", authMiddleware);
 
 app.use(
-	"/api/auth/*",
-	rateLimiter({
-		windowMs: 15 * 60 * 1000,
-		limit: 5,
-		standardHeaders: "draft-6",
-		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
-	}),
-);
-
-app.use(
 	"/public/*",
 	rateLimiter({
 		windowMs: 1 * 60 * 1000,
@@ -75,12 +95,6 @@ app.use(
 
 app.route("/posts", appRouter.postRoutes);
 app.route("/public", appRouter.publicRoutes);
-
-app.get("/:id", (c) => {
-	const user = c.get("user");
-	const id = c.req.param("id");
-	return c.json({ user, id });
-});
 
 app.onError(errorMiddleware);
 

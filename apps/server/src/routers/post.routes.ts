@@ -22,7 +22,7 @@ postRoutes.post(
 	postController.createPost,
 );
 
-postRoutes.post(
+postRoutes.patch(
 	"/post/update",
 	zValidator("json", updatePostSchema),
 	postController.updatePost,
