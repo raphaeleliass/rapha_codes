@@ -58,7 +58,16 @@ export class PostRepository {
 
 	getAllPosts = async () => {
 		const posts = await this.db
-			.select()
+			.select({
+				id: post.id,
+				authorImg: post.authorImg,
+				author: post.author,
+				title: post.title,
+				content: post.content,
+				draft: post.draft,
+				createdAt: post.createdAt,
+				updatedAt: post.updatedAt,
+			})
 			.from(post)
 			.where(eq(post.author, "Raphael Elias"))
 			.orderBy(desc(post.createdAt));
