@@ -25,7 +25,8 @@
 			"!**/.svelte-kit",
 			"!**/wrangler.jsonc",
 			"!**/.source",
-			"!**/apps/web/src/index.css"
+			"!**/apps/web/src/app/global.css",
+			"!**/apps/web/src/components/editor/styles/code-highlight.css"
 		]
 	},
 	"formatter": {

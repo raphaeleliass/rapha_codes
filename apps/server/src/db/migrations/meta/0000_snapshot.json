@@ -1,5 +1,5 @@
 {
-	"id": "32e206cb-05f1-4508-8424-e21b75ac94fa",
+	"id": "8a7cca6f-f627-4a70-bde7-74097c61121b",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"version": "7",
 	"dialect": "postgresql",
@@ -316,19 +316,90 @@
 			"checkConstraints": {},
 			"isRLSEnabled": false
 		},
-		"public.posts": {
-			"name": "posts",
+		"public.post": {
+			"name": "post",
 			"schema": "",
 			"columns": {
 				"id": {
 					"name": "id",
-					"type": "text",
+					"type": "uuid",
 					"primaryKey": true,
+					"notNull": true,
+					"default": "gen_random_uuid()"
+				},
+				"author_img": {
+					"name": "author_img",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"author": {
+					"name": "author",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"title": {
+					"name": "title",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"content": {
+					"name": "content",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"draft": {
+					"name": "draft",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "text",
+					"primaryKey": false,
 					"notNull": true
 				}
 			},
 			"indexes": {},
-			"foreignKeys": {},
+			"foreignKeys": {
+				"post_author_img_user_image_fk": {
+					"name": "post_author_img_user_image_fk",
+					"tableFrom": "post",
+					"tableTo": "user",
+					"columnsFrom": ["author_img"],
+					"columnsTo": ["image"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"post_user_id_user_id_fk": {
+					"name": "post_user_id_user_id_fk",
+					"tableFrom": "post",
+					"tableTo": "user",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
 			"compositePrimaryKeys": {},
 			"uniqueConstraints": {},
 			"policies": {},
