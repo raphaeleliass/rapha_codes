@@ -69,7 +69,7 @@ export class PostRepository {
 				updatedAt: post.updatedAt,
 			})
 			.from(post)
-			.where(eq(post.author, "Raphael Elias"))
+			.where(eq(post.draft, false))
 			.orderBy(desc(post.createdAt));
 
 		return posts;
