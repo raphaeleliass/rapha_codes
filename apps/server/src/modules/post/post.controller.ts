@@ -43,10 +43,10 @@ export class PostController {
 		return c.json(post, 200);
 	};
 
-	getPost = async (c: Context<HonoVariables>) => {
+	getPublicPost = async (c: Context<HonoVariables>) => {
 		const id = c.req.param("id");
 
-		const post = await this.postService.getPost({ id });
+		const post = await this.postService.getPublicPost({ id });
 
 		if (!post) return c.json({ message: "Post not found" }, 404);
 
@@ -55,6 +55,22 @@ export class PostController {
 
 	getAllPosts = async (c: Context<HonoVariables>) => {
 		const post = await this.postService.getAllPosts();
+
+		return c.json(post, 200);
+	};
+
+	getPrivatePost = async (c: Context<HonoVariables>) => {
+		const id = c.req.param("id");
+
+		const post = await this.postService.getPrivatePost({ id });
+
+		if (!post) return c.json({ message: "Post not found" }, 404);
+
+		return c.json(post, 200);
+	};
+
+	getAllPrivatePosts = async (c: Context<HonoVariables>) => {
+		const post = await this.postService.getAllPrivatePosts();
 
 		return c.json(post, 200);
 	};

@@ -44,11 +44,19 @@ export class PostService {
 		return post;
 	};
 
-	getPost = async (postValues: GetPostType) => {
-		return await this.postRepository.getPost(postValues);
+	getPublicPost = async (postId: GetPostType) => {
+		return await this.postRepository.getPublicPost(postId);
 	};
 
 	getAllPosts = async () => {
 		return await this.postRepository.getAllPosts();
+	};
+
+	getPrivatePost = async (postId: GetPostType) => {
+		return await this.postRepository.getPrivatePost(postId);
+	};
+
+	getAllPrivatePosts = async () => {
+		return await this.postRepository.getAllPrivatePosts();
 	};
 }

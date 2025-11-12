@@ -70,7 +70,7 @@ app.use("*", async (c, next) => {
 	return next();
 });
 
-app.use("/posts", authMiddleware);
+app.use("/posts/*", authMiddleware);
 
 app.use(
 	"/public/*",

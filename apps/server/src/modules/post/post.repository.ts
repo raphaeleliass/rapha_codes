@@ -1,4 +1,4 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import type { DrizzleDB } from "@/db";
 import { post } from "@/db/schema/post";
 import type {
@@ -47,11 +47,20 @@ export class PostRepository {
 		return deletedPost;
 	};
 
-	getPost = async (id: GetPostType) => {
+	getPublicPost = async (id: GetPostType) => {
 		const [selectedPost] = await this.db
-			.select()
+			.select({
+				id: post.id,
+				authorImg: post.authorImg,
+				author: post.author,
+				title: post.title,
+				content: post.content,
+				draft: post.draft,
+				createdAt: post.createdAt,
+				updatedAt: post.updatedAt,
+			})
 			.from(post)
-			.where(eq(post.id, id.id));
+			.where(and(eq(post.id, id.id), eq(post.draft, false)));
 
 		return selectedPost;
 	};
@@ -70,6 +79,42 @@ export class PostRepository {
 			})
 			.from(post)
 			.where(eq(post.draft, false))
+			.orderBy(desc(post.createdAt));
+
+		return posts;
+	};
+
+	getPrivatePost = async (id: GetPostType) => {
+		const [selectedPost] = await this.db
+			.select({
+				id: post.id,
+				authorImg: post.authorImg,
+				author: post.author,
+				title: post.title,
+				content: post.content,
+				draft: post.draft,
+				createdAt: post.createdAt,
+				updatedAt: post.updatedAt,
+			})
+			.from(post)
+			.where(eq(post.id, id.id));
+
+		return selectedPost;
+	};
+
+	getAllPrivatePosts = async () => {
+		const posts = await this.db
+			.select({
+				id: post.id,
+				authorImg: post.authorImg,
+				author: post.author,
+				title: post.title,
+				content: post.content,
+				draft: post.draft,
+				createdAt: post.createdAt,
+				updatedAt: post.updatedAt,
+			})
+			.from(post)
 			.orderBy(desc(post.createdAt));
 
 		return posts;
