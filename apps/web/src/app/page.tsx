@@ -9,8 +9,6 @@ export default async function Page() {
 
 	cacheLife("minutes");
 
-	console.log("post");
-
 	return (
 		<main>
 			<Suspense fallback={<LoadingPage />}>
