@@ -1,52 +1,61 @@
 "use client";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
-import fetchAllPosts from "@/actions/fetchAllPosts";
 import { authClient } from "@/lib/auth-client";
-import { usePostStore } from "@/store/usePostStore";
 import { useUserStore } from "@/store/useUserStore";
 import Navbar from "./layout/Navbar";
 import { ThemeProvider } from "./theme-provider";
 
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: { staleTime: 60 * 1000 },
+	},
+});
+
 export default function Providers({ children }: { children: React.ReactNode }) {
-	const { setUser, user } = useUserStore();
-	const { setPosts } = usePostStore();
-	// biome-ignore lint: not necessary include user at array of dependencies
+	const { setUser, user, setAuthLoading } = useUserStore();
+
+	// biome-ignore lint: unnecessary add dependencies
 	useEffect(() => {
-		if (user) return;
+		if (user) {
+			setAuthLoading(false);
+			return;
+		}
 
 		(async () => {
-			const cookie = await fetch("/api/get-cookie");
+			try {
+				const cookie = await fetch("/api/cookie");
 
-			if (!cookie.ok) return;
+				if (!cookie.ok) return;
 
-			const { data } = await authClient.getSession();
+				const { data } = await authClient.getSession();
 
-			if (data?.user) setUser(data.user);
-		})();
-	}, [setUser]);
+				if (!data) return;
 
-	//biome-ignore lint: safe to let setPosts outside array of dependencies
-	useEffect(() => {
-		(async () => {
-			const postsData = await fetchAllPosts();
-
-			setPosts(postsData);
+				setUser(data.user);
+			} finally {
+				setAuthLoading(false);
+			}
 		})();
 	}, []);
 
 	return (
-		<ThemeProvider
-			attribute="class"
-			defaultTheme="system"
-			enableSystem
-			disableTransitionOnChange
-		>
-			<Navbar />
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider
+				attribute="class"
+				defaultTheme="system"
+				enableSystem
+				disableTransitionOnChange
+			>
+				<Navbar />
 
-			{children}
-			<Toaster richColors position="top-center" />
-		</ThemeProvider>
+				{children}
+				<Toaster richColors position="bottom-right" />
+			</ThemeProvider>
+			<ReactQueryDevtools />
+		</QueryClientProvider>
 	);
 }

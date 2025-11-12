@@ -15,7 +15,10 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import BubbleMenu from "./ui/bubble-menu";
 import "../editor/styles/code-highlight.css";
+import { type PostType, usePostStore } from "@/store/usePostStore";
 import { useUserStore } from "@/store/useUserStore";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import ActionButton from "./ui/action-button";
 import FloatingBar from "./ui/floating-bar";
 import FloatingMenu from "./ui/floating-menu";
@@ -29,12 +32,28 @@ lowlight.register("ts", ts);
 
 interface EditorProps {
 	content: string;
-	editable: boolean;
+
+	post: PostType;
 }
 
-export default function Editor({ content, editable = false }: EditorProps) {
+export default function Editor({ post, content }: EditorProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { user } = useUserStore();
+	const [isEditing, setIsEditing] = useState<boolean>(false);
+	const [editable, setEditable] = useState<boolean>(false);
+	const [title, setTitle] = useState<string>(post.title);
+
+	const { setCurrentPost } = usePostStore();
+
+	function toggleEditMode() {
+		if (!isEditing) {
+			setCurrentPost(post);
+		} else {
+			setTitle(post.title);
+		}
+		setIsEditing((prev) => !prev);
+		setEditable((prev) => !prev);
+	}
 
 	const editor = useEditor({
 		extensions: [
@@ -91,22 +110,60 @@ export default function Editor({ content, editable = false }: EditorProps) {
 					))}
 				</div>
 			) : (
-				<div className="relative">
-					{editor && user && editable && <FloatingBar editor={editor} />}
+				<section className="custom-container min-h-dvh py-20">
+					<article className="font-sans">
+						<div className="mx-auto flex w-full flex-col gap-8 md:max-w-2/3">
+							<div className="mr-auto flex w-full flex-row items-center justify-between text-muted-foreground">
+								<div>
+									<p className="text-sm">{post.author}</p>
+									<p className="font-light text-xs">
+										{new Date(post.createdAt).toLocaleString("pt-BR", {
+											day: "2-digit",
+											month: "2-digit",
+											year: "2-digit",
+											hour: "2-digit",
+											minute: "2-digit",
+										})}
+									</p>
+								</div>
 
-					<EditorContent editor={editor} />
+								{user && (
+									<Button onClick={toggleEditMode}>
+										{isEditing ? "cancelar" : "editar"}
+									</Button>
+								)}
+							</div>
 
-					{editor && user && editable && (
-						<BubbleMenu
-							setIsLoading={setIsLoading}
-							isLoading={isLoading}
-							editor={editor}
-						/>
-					)}
+							{isEditing ? (
+								<Input
+									className="text-balance bg-transparent text-5xl outline-none"
+									value={title}
+									onChange={(e) => setTitle(e.target.value)}
+								/>
+							) : (
+								<h1 className="text-balance text-5xl">{post.title}</h1>
+							)}
+							<div className="relative">
+								{editor && user && editable && <FloatingBar editor={editor} />}
 
-					{editor && user && editable && <FloatingMenu editor={editor} />}
-					{editor && user && editable && <ActionButton editor={editor} />}
-				</div>
+								<EditorContent editor={editor} />
+
+								{editor && user && editable && (
+									<BubbleMenu
+										setIsLoading={setIsLoading}
+										isLoading={isLoading}
+										editor={editor}
+									/>
+								)}
+
+								{editor && user && editable && <FloatingMenu editor={editor} />}
+								{editor && user && editable && (
+									<ActionButton editor={editor} title={title} />
+								)}
+							</div>
+						</div>
+					</article>
+				</section>
 			)}
 		</>
 	);

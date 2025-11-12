@@ -1,11 +1,23 @@
+import { cacheLife } from "next/cache";
+import { Suspense } from "react";
 import Footer from "@/components/layout/Footer";
-import Home from "@/components/layout/Home";
+import Posts from "@/components/layout/Posts";
+import LoadingPage from "@/components/ui/loadingPage";
 
 export default async function Page() {
+	"use cache";
+
+	cacheLife("minutes");
+
+	console.log("post");
+
 	return (
-		<>
-			<Home />
+		<main>
+			<Suspense fallback={<LoadingPage />}>
+				<Posts />
+			</Suspense>
+
 			<Footer />
-		</>
+		</main>
 	);
 }
