@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 
 export default async function Posts() {
 	const res = await fetch(`${serverUrl}/public/all-posts`);
-	console.log(res);
 
 	const posts: PostType[] = await res.json();
 
