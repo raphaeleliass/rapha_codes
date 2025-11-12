@@ -1,13 +1,15 @@
-"use client";
-
 import Link from "next/link";
-import { type PostType, usePostStore } from "@/store/usePostStore";
+import { serverUrl } from "@/constants";
+import type { PostType } from "@/store/usePostStore";
 import { Button } from "../ui/button";
 
-export default function Posts() {
-	const { posts: postStore } = usePostStore();
+export default async function Posts() {
+	const res = await fetch(`${serverUrl}/public/all-posts`);
+	console.log(res);
 
-	const postData = postStore.filter((post) => !post.draft);
+	const posts: PostType[] = await res.json();
+
+	const postData = posts?.filter((post) => !post.draft) || [];
 
 	const postsByMonth = postData.reduce(
 		(acc, post) => {
@@ -24,6 +26,16 @@ export default function Posts() {
 		},
 		{} as Record<string, PostType[]>,
 	);
+
+	if (postData.length === 0) {
+		return (
+			<section>
+				<div className="custom-container min-h-dvh">
+					<p className="text-muted-foreground">Nenhum post publicado ainda.</p>
+				</div>
+			</section>
+		);
+	}
 
 	return (
 		<section>

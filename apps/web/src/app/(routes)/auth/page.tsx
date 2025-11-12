@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { toast } from "sonner";
@@ -37,7 +37,7 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 export default function Page() {
-	const { setUser } = useUserStore();
+	const { setUser, user } = useUserStore();
 	const router = useRouter();
 
 	const form = useForm<FormType>({
@@ -50,15 +50,14 @@ export default function Page() {
 
 	const { isSubmitting } = useFormState({ control: form.control });
 
+	// biome-ignore lint: unnecessary add dependencies
 	useEffect(() => {
-		(async () => {
-			const cookie = await fetch("/api/get-cookie");
+		(() => {
+			if (!user) return;
 
-			if (!cookie.ok) return;
-
-			router.replace("/");
+			return redirect("/");
 		})();
-	}, [router]);
+	}, []);
 
 	async function handleSubmitForm({ email, password }: FormType) {
 		await authClient.signIn.email(
@@ -70,7 +69,7 @@ export default function Page() {
 				onSuccess: (c) => {
 					setUser(c.data.user);
 					toast.success("Login realizado com sucesso!");
-					router.push("/");
+					router.push("/dashboard");
 				},
 				onError: (c) => {
 					if (c.error.statusText) {

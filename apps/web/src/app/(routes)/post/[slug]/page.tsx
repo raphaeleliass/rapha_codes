@@ -1,32 +1,26 @@
-import { Loader2 } from "lucide-react";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import FetchAllPosts from "@/actions/fetchAllPosts";
-import Post from "@/components/layout/Post";
-import type { PostType } from "@/store/usePostStore";
+import Editor from "@/components/editor/editor";
+import LoadingPage from "@/components/ui/loadingPage";
+import { fetchPublicPost } from "@/services/getPosts";
 
-export default async function Page({
+async function PostPage({
+	paramsPromise,
+}: {
+	paramsPromise: Promise<{ slug: string }>;
+}) {
+	const { slug } = await paramsPromise;
+	const post = await fetchPublicPost(slug);
+	return <Editor content={post.content} post={post} />;
+}
+
+export default function Page({
 	params,
 }: {
 	params: Promise<{ slug: string }>;
 }) {
-	const { slug } = await params;
-
-	const data: PostType[] = await FetchAllPosts();
-
-	const post = data.find((post) => post.id === slug && !post.draft);
-
-	if (!post) return notFound();
-
 	return (
-		<Suspense
-			fallback={
-				<p className="h-dvh place-content-center justify-items-center">
-					<Loader2 className="animate-spin" />
-				</p>
-			}
-		>
-			<Post post={post} />
+		<Suspense fallback={<LoadingPage />}>
+			<PostPage paramsPromise={params} />
 		</Suspense>
 	);
 }
