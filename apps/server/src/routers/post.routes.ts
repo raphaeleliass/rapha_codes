@@ -33,3 +33,7 @@ postRoutes.delete(
 	zValidator("param", deletePostSchema),
 	postController.deletePost,
 );
+
+postRoutes.get("/post/:id", postController.getPrivatePost);
+
+postRoutes.get("/all-private-posts", postController.getAllPrivatePosts);
