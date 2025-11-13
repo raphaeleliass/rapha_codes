@@ -55,13 +55,6 @@ export default function Navbar() {
 			<nav>
 				<ul className="flex flex-row items-center gap-2">
 					<li>
-						<Link href={"/sobre"} className="max-sm:text-sm">
-							<Button size={"sm"} variant={"ghost"}>
-								sobre
-							</Button>
-						</Link>
-					</li>
-					<li>
 						<Link
 							href={"https://github.com/raphaeleliass"}
 							target="_blank"
