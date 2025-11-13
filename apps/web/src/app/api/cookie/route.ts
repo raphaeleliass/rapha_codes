@@ -2,7 +2,9 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-	const cookie = (await cookies()).get("better-auth.session_token");
+	const cookie =
+		(await cookies()).get("better-auth.session_token") ||
+		(await cookies()).get("__Secure-better-auth.session_token");
 
 	if (!cookie) return NextResponse.json(null, { status: 404 });
 
