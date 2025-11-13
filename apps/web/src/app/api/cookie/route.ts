@@ -8,5 +8,5 @@ export async function GET() {
 
 	if (!cookie) return NextResponse.json(null, { status: 404 });
 
-	return NextResponse.json({ cookie: cookie.value });
+	return NextResponse.json({ hasCookie: true });
 }
