@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { use } from "react";
 import { toast } from "sonner";
 import Editor from "@/components/editor/editor";
@@ -24,7 +24,7 @@ export default function Page({
 			});
 
 			if (res.status === 404) {
-				redirect("/not-found");
+				return notFound();
 			}
 
 			if (res.status === 401) {
@@ -46,8 +46,7 @@ export default function Page({
 	}
 
 	if (!data) {
-		redirect("/not-found");
-		return null;
+		return notFound();
 	}
 
 	return <Editor post={data} content={data.content} />;
