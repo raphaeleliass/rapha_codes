@@ -1,26 +1,18 @@
-import { Suspense } from "react";
 import Editor from "@/components/editor/editor";
-import LoadingPage from "@/components/ui/loadingPage";
-import { fetchPublicPost } from "@/services/getPosts";
+import { serverUrl } from "@/constants";
 
-async function PostPage({
-	paramsPromise,
-}: {
-	paramsPromise: Promise<{ slug: string }>;
-}) {
-	const { slug } = await paramsPromise;
-	const post = await fetchPublicPost(slug);
-	return <Editor content={post.content} post={post} />;
-}
-
-export default function Page({
+export default async function Page({
 	params,
 }: {
 	params: Promise<{ slug: string }>;
 }) {
-	return (
-		<Suspense fallback={<LoadingPage />}>
-			<PostPage paramsPromise={params} />
-		</Suspense>
-	);
+	const { slug } = await params;
+
+	const res = await fetch(`${serverUrl}/public/post/${slug}`, {
+		next: { revalidate: 60 },
+	});
+
+	const post = await res.json();
+
+	return <Editor content={post.content} post={post} />;
 }
