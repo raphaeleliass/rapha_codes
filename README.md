@@ -1,6 +1,6 @@
 # rapha_codes
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines Next.js, Hono, and more.
+This project is a personal blog builded with a modern TypeScript stack that combines Next.js, Hono, and more.
 
 ## Features
 
