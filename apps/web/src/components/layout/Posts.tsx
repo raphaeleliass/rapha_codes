@@ -4,7 +4,15 @@ import type { PostType } from "@/store/usePostStore";
 import { Button } from "../ui/button";
 
 export default async function Posts() {
-	const res = await fetch(`${serverUrl}/public/all-posts`);
+	const res = await fetch(`${serverUrl}/public/all-posts`, {
+		next: { revalidate: 60 },
+	});
+	if (!res.ok)
+		return (
+			<div className="h-dvh place-content-center justify-items-center">
+				<h2>Nenhum post publicado</h2>
+			</div>
+		);
 
 	const posts: PostType[] = await res.json();
 
