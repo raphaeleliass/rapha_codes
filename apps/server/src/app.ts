@@ -17,7 +17,7 @@ app.use(
 	cors({
 		origin: process.env.CORS_ORIGIN || "",
 		allowMethods: ["GET", "POST", "OPTIONS", "DELETE", "PATCH"],
-		allowHeaders: ["Content-Type", "Authorization"],
+		allowHeaders: ["Content-Type", "Authorization", "X-Internal-API-Key"],
 		credentials: true,
 	}),
 );
@@ -41,6 +41,8 @@ app.use(
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
 );
+
+app.use("/api/auth/sign-up/email", authMiddleware);
 
 app.use(
 	"/api/auth/*",
