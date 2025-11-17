@@ -27,10 +27,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
 		(async () => {
 			try {
-				const cookie = await fetch("/api/cookie");
-
-				if (!cookie.ok) return;
-
 				const { data } = await authClient.getSession();
 
 				if (!data) return;
