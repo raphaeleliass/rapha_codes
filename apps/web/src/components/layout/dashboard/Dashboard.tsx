@@ -1,5 +1,6 @@
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -139,6 +140,11 @@ export default function Dashboard() {
 						</CardContent>
 					</Card>
 				))}
+				<Link href={"/private/post/create"} className="w-full md:max-w-1/3">
+					<Card className="flex h-full w-full flex-col items-center justify-center transition-colors hover:bg-muted">
+						<CardTitle>Criar novo post</CardTitle>
+					</Card>
+				</Link>
 			</div>
 
 			<PostsTable

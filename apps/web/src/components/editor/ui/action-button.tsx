@@ -3,13 +3,15 @@
 import type { Editor } from "@tiptap/react";
 import axios, { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { serverUrl } from "@/constants";
-import { usePostStore } from "@/store/usePostStore";
+import { type PostType, usePostStore } from "@/store/usePostStore";
+import { useUserStore } from "@/store/useUserStore";
 
 export default function ActionButton({
 	editor,
@@ -18,8 +20,9 @@ export default function ActionButton({
 	editor: Editor | null;
 	title: string;
 }) {
-	const { currentPost, setCurrentPost, updatePost } = usePostStore();
-
+	const { addPost, currentPost, setCurrentPost, updatePost } = usePostStore();
+	const { user } = useUserStore();
+	const router = useRouter();
 	const form = useForm({
 		defaultValues: {
 			draft: false,
@@ -30,24 +33,44 @@ export default function ActionButton({
 		const currentContent = editor?.getHTML();
 
 		if (
+			currentPost &&
 			currentContent === currentPost?.content &&
 			draft === currentPost?.draft &&
 			title === currentPost?.title
-		)
+		) {
 			return toast.error("Não houve mudança no conteúdo");
+		}
 
 		try {
-			const { data } = await axios.patch(
-				`${serverUrl}/posts/post/update`,
-				{ id: currentPost?.id, content: currentContent, draft, title },
-				{ withCredentials: true },
-			);
+			let postData: PostType;
+			if (currentPost) {
+				const { data } = await axios.patch(
+					`${serverUrl}/posts/post/update`,
+					{ id: currentPost.id, content: currentContent, draft, title },
+					{ withCredentials: true },
+				);
+				postData = data;
+				updatePost(postData);
+				toast.success("Post atualizado!");
+			} else {
+				const { data } = await axios.post(
+					`${serverUrl}/posts/post/create`,
+					{
+						content: currentContent,
+						draft,
+						title,
+						author: user?.name,
+						authorImg: user?.image,
+					},
+					{ withCredentials: true },
+				);
+				postData = data;
+				addPost(postData);
+				toast.success("Post criado!");
+				router.push("/dashboard");
+			}
 
-			setCurrentPost(data);
-
-			updatePost({ ...data });
-
-			toast.success("Post atualizado!");
+			setCurrentPost(postData);
 		} catch (err) {
 			if (err instanceof AxiosError) {
 				return toast.error(err.message);
