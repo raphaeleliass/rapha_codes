@@ -1,9 +1,13 @@
-import { Hono } from "hono";
-
+import { OpenAPIHono } from "@hono/zod-openapi";
+import type { HonoVariables } from "@/types/HonoVariables";
+import {
+	getAllPublicPostRoute,
+	getPublicPostRoute,
+} from "./config/post.routes.config";
 import { postController } from "./post.routes";
 
-export const publicRoutes = new Hono();
+export const publicRoutes = new OpenAPIHono<HonoVariables>();
 
-publicRoutes.get("/post/:id", postController.getPublicPost);
+publicRoutes.openapi(getPublicPostRoute, postController.getPublicPost);
 
-publicRoutes.get("/all-posts", postController.getAllPosts);
+publicRoutes.openapi(getAllPublicPostRoute, postController.getAllPublicPosts);
