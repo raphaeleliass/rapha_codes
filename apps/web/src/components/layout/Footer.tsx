@@ -1,29 +1,36 @@
+"use client";
 import { SiGithub, SiInstagram } from "@icons-pack/react-simple-icons";
 import { Linkedin } from "lucide-react";
 
-const medias = [
-	{
-		title: "Github",
-		icon: SiGithub,
-		href: "https://github.com/raphaeleliass",
-	},
-	{
-		title: "Instagram",
-		icon: SiInstagram,
-		href: "https://instagram.com/raphaeleliass",
-	},
-	{
-		title: "Linkedin",
-		icon: Linkedin,
-		href: "https://linkedin.com/in/raphaeleliass",
-	},
-];
-
 export default function Footer() {
+	const social = [
+		{
+			title: "Github",
+			icon: SiGithub,
+			href: "https://github.com/raphaeleliass",
+		},
+		{
+			title: "Instagram",
+			icon: SiInstagram,
+			href: "https://instagram.com/raphaeleliass",
+		},
+		{
+			title: "Linkedin",
+			icon: Linkedin,
+			href: "https://linkedin.com/in/raphaeleliass",
+		},
+	];
+
+	function getYear() {
+		const date = new Date().getFullYear();
+
+		return date;
+	}
+
 	return (
 		<footer className="custom-container flex flex-col items-center justify-between md:flex-row">
 			<p className="text-muted-foreground text-xs">
-				{new Date().getFullYear()} &copy; Desenvolvido por{" "}
+				{getYear()} &copy; Desenvolvido por{" "}
 				<a
 					href="https://github.com/raphaeleliass"
 					target="_blank"
@@ -37,7 +44,7 @@ export default function Footer() {
 
 			<div>
 				<ul className="flex flex-row gap-2">
-					{medias.map((media) => {
+					{social.map((media) => {
 						const Icon = media.icon;
 
 						return (

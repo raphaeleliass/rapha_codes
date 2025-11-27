@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type PostType = {
+export type TypePost = {
 	id: string;
 	authorImg: string;
 	author: string;
@@ -12,12 +12,12 @@ export type PostType = {
 };
 
 type PostStore = {
-	posts: PostType[];
-	currentPost: PostType | null;
-	setCurrentPost: (post: PostType) => void;
-	setPosts: (posts: PostType[]) => void;
-	addPost: (post: PostType) => void;
-	updatePost: (post: PostType) => void;
+	posts: TypePost[];
+	currentPost: TypePost | null;
+	setCurrentPost: (post: TypePost) => void;
+	setPosts: (posts: TypePost[]) => void;
+	addPost: (post: TypePost) => void;
+	updatePost: (post: TypePost) => void;
 	deletePost: (id: string) => void;
 	loading: boolean;
 	setLoading: (loading: boolean) => void;

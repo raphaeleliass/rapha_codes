@@ -1,22 +1,9 @@
 import Link from "next/link";
-import { serverUrl } from "@/constants";
-import type { PostType } from "@/store/usePostStore";
+import type { TypePost } from "@/store/usePostStore";
 import { Button } from "../ui/button";
 
-export default async function Posts() {
-	const res = await fetch(`${serverUrl}/public/all-posts`, {
-		next: { revalidate: 60 },
-	});
-	if (!res.ok)
-		return (
-			<div className="h-dvh place-content-center justify-items-center">
-				<h2>Nenhum post publicado</h2>
-			</div>
-		);
-
-	const posts: PostType[] = await res.json();
-
-	const postData = posts?.filter((post) => !post.draft) || [];
+export default function Posts({ posts }: { posts: TypePost[] }) {
+	const postData = posts?.filter((post) => !post.draft);
 
 	const postsByMonth = postData.reduce(
 		(acc, post) => {
@@ -31,7 +18,7 @@ export default async function Posts() {
 
 			return acc;
 		},
-		{} as Record<string, PostType[]>,
+		{} as Record<string, TypePost[]>,
 	);
 
 	if (postData.length === 0) {
