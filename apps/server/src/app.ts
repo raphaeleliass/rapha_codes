@@ -1,15 +1,17 @@
 import "dotenv/config";
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { Scalar } from "@scalar/hono-api-reference";
+import { licenseText } from "data";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { rateLimiter } from "hono-rate-limiter";
 import { auth } from "./lib/auth";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
-import { appRouter } from "./routers";
+import { appRouter } from "./routers/router";
 import type { HonoVariables } from "./types/HonoVariables";
 
-const app = new Hono<HonoVariables>();
+const app = new OpenAPIHono<HonoVariables>();
 
 app.use(logger());
 app.use(
@@ -27,16 +29,6 @@ app.use(
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
 		limit: 100,
-		standardHeaders: "draft-6",
-		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
-	}),
-);
-
-app.use(
-	"/api/auth/sign-in/email",
-	rateLimiter({
-		windowMs: 15 * 60 * 1000,
-		limit: 5,
 		standardHeaders: "draft-6",
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
@@ -73,6 +65,7 @@ app.use("*", async (c, next) => {
 });
 
 app.use("/posts/*", authMiddleware);
+app.use("/ai/*", authMiddleware);
 
 app.use(
 	"/public/*",
@@ -95,8 +88,55 @@ app.use(
 	}),
 );
 
+app.get("/license", (c) => {
+	return c.text(licenseText);
+});
+
+app.doc("/doc", {
+	openapi: "3.0.0",
+	info: {
+		title: "API Rapha Codes - Documentação Oficial",
+		version: "1.0.0",
+		contact: {
+			name: "Suporte Rapha Codes",
+			email: "raphaeleliass@outloook.com",
+			url: "https://raphaelelias.vercel.app/",
+		},
+		license: {
+			name: "MIT",
+			url: "/license",
+		},
+	},
+	tags: [
+		{
+			name: "Posts",
+			description: "Endpoints for managing posts protected by authentication.",
+		},
+		{
+			name: "Public Posts",
+			description: "Endpoints to show public posts.",
+		},
+		{
+			name: "AI",
+			description: "Endpoints to show AI conversations.",
+		},
+	],
+});
+
+app.get(
+	"/docs",
+	Scalar({
+		pageTitle: "API Rapha Codes",
+		url: "/doc",
+		theme: "deepSpace",
+		showToolbar: "never",
+		hideClientButton: true,
+	}),
+);
+
 app.route("/posts", appRouter.postRoutes);
 app.route("/public", appRouter.publicRoutes);
+app.route("/ai", appRouter.aiConversationRoutes);
 
 app.onError(errorMiddleware);
 
