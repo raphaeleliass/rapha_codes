@@ -6,14 +6,9 @@ import LoadingPage from "@/components/ui/loadingPage";
 import { serverUrl } from "@/constants";
 
 async function fetchPublicPosts() {
-	"use cache";
-
-	cacheLife("minutes");
-	cacheTag("public-posts");
-
-	const res = await fetch(`${serverUrl}/public/posts`).then((res) =>
-		res.json(),
-	);
+	const res = await fetch(`${serverUrl}/public/posts`, {
+		next: { revalidate: 120, tags: ["public-posts"] },
+	}).then((res) => res.json());
 
 	return res;
 }
