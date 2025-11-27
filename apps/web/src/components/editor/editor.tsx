@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import BubbleMenu from "./ui/bubble-menu";
 import "../editor/styles/code-highlight.css";
-import { type PostType, usePostStore } from "@/store/usePostStore";
+import { type TypePost, usePostStore } from "@/store/usePostStore";
 import { useUserStore } from "@/store/useUserStore";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -33,7 +33,7 @@ lowlight.register("ts", ts);
 interface EditorProps {
 	content: string;
 
-	post: PostType;
+	post: TypePost;
 }
 
 export default function Editor({ post, content }: EditorProps) {

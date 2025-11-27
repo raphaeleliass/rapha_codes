@@ -16,10 +16,10 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import type { PostType } from "@/store/usePostStore";
+import type { TypePost } from "@/store/usePostStore";
 
 interface PostsTableProps {
-	posts: PostType[];
+	posts: TypePost[];
 	deletePost: (id: string) => void;
 	updatePost: (data: { id: string; draft: boolean }) => void;
 	isDeleting: boolean;

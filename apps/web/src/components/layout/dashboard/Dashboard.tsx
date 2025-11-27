@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import LoadingPage from "@/components/ui/loadingPage";
 import { serverUrl } from "@/constants";
-import type { PostType } from "@/store/usePostStore";
+import type { TypePost } from "@/store/usePostStore";
 import { useUserStore } from "@/store/useUserStore";
 import PostsTable from "./Table";
 
@@ -33,8 +33,8 @@ export default function Dashboard() {
 		error,
 	} = useQuery({
 		queryKey: ["private-posts"],
-		queryFn: async (): Promise<PostType[]> => {
-			const res = await fetch(`${serverUrl}/posts/all-private-posts`, {
+		queryFn: async (): Promise<TypePost[]> => {
+			const res = await fetch(`${serverUrl}/posts`, {
 				credentials: "include",
 			});
 
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
 	const { mutate: deletePost, isPending: isDeleting } = useMutation({
 		mutationFn: async (id: string) => {
-			const res = await fetch(`${serverUrl}/posts/post/delete/${id}`, {
+			const res = await fetch(`${serverUrl}/posts/post/delete?id=${id}`, {
 				method: "DELETE",
 				credentials: "include",
 			});

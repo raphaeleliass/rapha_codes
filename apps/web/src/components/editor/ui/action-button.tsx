@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { serverUrl } from "@/constants";
-import { type PostType, usePostStore } from "@/store/usePostStore";
+import { type TypePost, usePostStore } from "@/store/usePostStore";
 import { useUserStore } from "@/store/useUserStore";
 
 export default function ActionButton({
@@ -42,7 +42,7 @@ export default function ActionButton({
 		}
 
 		try {
-			let postData: PostType;
+			let postData: TypePost;
 			if (currentPost) {
 				const { data } = await axios.patch(
 					`${serverUrl}/posts/post/update`,

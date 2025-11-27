@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import Editor from "@/components/editor/editor";
 import LoadingPage from "@/components/ui/loadingPage";
 import { serverUrl } from "@/constants";
-import type { PostType } from "@/store/usePostStore";
+import type { TypePost } from "@/store/usePostStore";
 
 export default function Page({
 	params,
@@ -16,10 +16,10 @@ export default function Page({
 }) {
 	const { slug } = use(params);
 
-	const { data, isLoading } = useQuery<PostType>({
+	const { data, isLoading } = useQuery<TypePost>({
 		queryKey: ["private-post", slug],
 		queryFn: async () => {
-			const res = await fetch(`${serverUrl}/posts/post/${slug}`, {
+			const res = await fetch(`${serverUrl}/posts/post?id=${slug}`, {
 				credentials: "include",
 			});
 
