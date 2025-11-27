@@ -7,8 +7,8 @@ import type {
 	updatePostSchema,
 } from "./post.schema";
 
-export type PostType = z.infer<typeof postSchema>;
-export type CreatePostType = z.infer<typeof createPostSchema>;
-export type DeletePostType = z.infer<typeof deletePostSchema>;
-export type UpdatePostType = z.infer<typeof updatePostSchema>;
-export type GetPostType = z.infer<typeof getPostSchema>;
+export type TypePost = z.infer<typeof postSchema>;
+export type TypeCreatePost = z.infer<typeof createPostSchema>;
+export type TypeDeletePost = z.infer<typeof deletePostSchema>;
+export type TypeUpdatePost = z.infer<typeof updatePostSchema>;
+export type TypeGetPost = z.infer<typeof getPostSchema>;

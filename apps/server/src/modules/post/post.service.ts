@@ -1,10 +1,10 @@
 import { HTTPException } from "hono/http-exception";
 import type { PostRepository } from "./post.repository";
 import type {
-	CreatePostType,
-	DeletePostType,
-	GetPostType,
-	UpdatePostType,
+	TypeCreatePost,
+	TypeDeletePost,
+	TypeGetPost,
+	TypeUpdatePost,
 } from "./post.types";
 
 export class PostService {
@@ -14,7 +14,7 @@ export class PostService {
 		this.postRepository = postRepository;
 	}
 
-	createPost = async (userId: string, postValues: CreatePostType) => {
+	createPost = async (userId: string, postValues: TypeCreatePost) => {
 		if (!userId)
 			throw new HTTPException(400, { message: "Missing userId field" });
 
@@ -22,7 +22,7 @@ export class PostService {
 		return post;
 	};
 
-	updatePost = async (userId: string, postValues: UpdatePostType) => {
+	updatePost = async (userId: string, postValues: TypeUpdatePost) => {
 		if (!userId)
 			throw new HTTPException(400, { message: "Missing userId field" });
 
@@ -33,7 +33,7 @@ export class PostService {
 		return post;
 	};
 
-	deletePost = async (userId: string, postValues: DeletePostType) => {
+	deletePost = async (userId: string, postValues: TypeDeletePost) => {
 		if (!userId)
 			throw new HTTPException(400, { message: "Missing userId field" });
 
@@ -44,19 +44,19 @@ export class PostService {
 		return post;
 	};
 
-	getPublicPost = async (postId: GetPostType) => {
+	getPublicPost = async (postId: TypeGetPost) => {
 		return await this.postRepository.getPublicPost(postId);
+	};
+
+	getAllPublicPosts = async () => {
+		return await this.postRepository.getAllPublicPosts();
+	};
+
+	getPost = async (postId: TypeGetPost) => {
+		return await this.postRepository.getPost(postId);
 	};
 
 	getAllPosts = async () => {
 		return await this.postRepository.getAllPosts();
-	};
-
-	getPrivatePost = async (postId: GetPostType) => {
-		return await this.postRepository.getPrivatePost(postId);
-	};
-
-	getAllPrivatePosts = async () => {
-		return await this.postRepository.getAllPrivatePosts();
 	};
 }

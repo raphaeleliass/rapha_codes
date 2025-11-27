@@ -33,20 +33,41 @@ export class PostController {
 
 	deletePost = async (c: Context<HonoVariables>) => {
 		const userId = c.get("userId");
-		const id = c.req.param("id");
+		const id = c.req.query("id");
 
-		if (!userId) return c.json({ message: "Missing userId header" });
-		if (!id) return c.json({ message: "Missing id param" }, 400);
+		if (!userId) return c.json({ message: "Missing userId header" }, 400);
+		if (!id) return c.json({ message: "Missing id query" }, 400);
 
 		const post = await this.postService.deletePost(userId, { id });
+
+		if (!post) return c.json({ message: "Post not found" }, 404);
 
 		return c.json(post, 200);
 	};
 
 	getPublicPost = async (c: Context<HonoVariables>) => {
-		const id = c.req.param("id");
+		const id = c.req.query("id");
+
+		if (!id) return c.json(null, 404);
 
 		const post = await this.postService.getPublicPost({ id });
+		if (!post) return c.json(null, 404);
+
+		return c.json(post, 200);
+	};
+
+	getAllPublicPosts = async (c: Context<HonoVariables>) => {
+		const post = await this.postService.getAllPublicPosts();
+
+		return c.json(post, 200);
+	};
+
+	getPost = async (c: Context<HonoVariables>) => {
+		const id = c.req.query("id");
+
+		if (!id) return c.json({ message: "Missing id param" }, 400);
+
+		const post = await this.postService.getPost({ id });
 
 		if (!post) return c.json({ message: "Post not found" }, 404);
 
@@ -55,22 +76,6 @@ export class PostController {
 
 	getAllPosts = async (c: Context<HonoVariables>) => {
 		const post = await this.postService.getAllPosts();
-
-		return c.json(post, 200);
-	};
-
-	getPrivatePost = async (c: Context<HonoVariables>) => {
-		const id = c.req.param("id");
-
-		const post = await this.postService.getPrivatePost({ id });
-
-		if (!post) return c.json({ message: "Post not found" }, 404);
-
-		return c.json(post, 200);
-	};
-
-	getAllPrivatePosts = async (c: Context<HonoVariables>) => {
-		const post = await this.postService.getAllPrivatePosts();
 
 		return c.json(post, 200);
 	};
