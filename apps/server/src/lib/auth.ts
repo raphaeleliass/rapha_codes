@@ -1,6 +1,5 @@
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { nextCookies } from "better-auth/next-js";
 import { username } from "better-auth/plugins";
 import { db } from "../db";
 import * as schema from "../db/schema/auth";
@@ -15,7 +14,7 @@ export const auth = betterAuth<BetterAuthOptions>({
 	emailAndPassword: {
 		enabled: true,
 	},
-	plugins: [username(), nextCookies()],
+	plugins: [username()],
 	advanced: {
 		defaultCookieAttributes: {
 			sameSite: "none",
