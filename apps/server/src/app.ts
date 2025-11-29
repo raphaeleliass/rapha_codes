@@ -14,6 +14,7 @@ import type { HonoVariables } from "./types/HonoVariables";
 const app = new OpenAPIHono<HonoVariables>();
 
 app.use(logger());
+
 app.use(
 	"/*",
 	cors({
@@ -40,7 +41,7 @@ app.use(
 	"/api/auth/*",
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
-		limit: 20,
+		limit: 100,
 		standardHeaders: "draft-6",
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
@@ -70,8 +71,8 @@ app.use("/ai/*", authMiddleware);
 app.use(
 	"/public/*",
 	rateLimiter({
-		windowMs: 1 * 60 * 1000,
-		limit: 60,
+		windowMs: 15 * 60 * 1000,
+		limit: 1000,
 		standardHeaders: "draft-6",
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
 	}),
@@ -81,7 +82,7 @@ app.use(
 	"/posts/*",
 	rateLimiter({
 		windowMs: 15 * 60 * 1000,
-		limit: 60,
+		limit: 500,
 		standardHeaders: "draft-6",
 
 		keyGenerator: (c) => c.req.header("x-forwarded-for") ?? "",
