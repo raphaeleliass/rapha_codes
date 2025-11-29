@@ -4,7 +4,7 @@
   <p align="center">
     Um blog pessoal moderno e full-stack construído com as tecnologias mais recentes do ecossistema TypeScript.
     <br />
-    <a href="https://www.rapha.codes"><strong>rapha.codes</strong></a>
+    <a href="https://rapha-codes.vercel.app"><strong>rapha.codes</strong></a>
     <br />
     <br />
   </p>
