@@ -7,6 +7,8 @@ import {
 	updatePostSchema,
 } from "@/modules/post/post.schema";
 
+const postSchemaResponse = postSchema.omit({ userId: true });
+
 export const createPostRoute = createRoute({
 	method: "post",
 	path: "/post/create",
@@ -26,7 +28,7 @@ export const createPostRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: postSchema,
+					schema: postSchemaResponse,
 				},
 			},
 			description: "Retrieve created post",
@@ -59,7 +61,7 @@ export const updatePostRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: postSchema,
+					schema: postSchemaResponse,
 				},
 			},
 			description: "Retrieve updated post",
@@ -85,7 +87,7 @@ export const deletePostRoute = createRoute({
 			description: "Retrieve deleted post",
 			content: {
 				"application/json": {
-					schema: postSchema,
+					schema: postSchemaResponse,
 				},
 			},
 		},
@@ -109,7 +111,7 @@ export const getPostRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: postSchema,
+					schema: postSchemaResponse,
 				},
 			},
 			description: "Retrieve a post",
@@ -131,7 +133,7 @@ export const getAllPostsRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: z.array(postSchema),
+					schema: z.array(postSchemaResponse),
 				},
 			},
 			description: "Retrieve all private posts",
@@ -153,7 +155,7 @@ export const getPublicPostRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: postSchema,
+					schema: postSchemaResponse,
 				},
 			},
 			description: "Retrieve a public post",
@@ -175,7 +177,7 @@ export const getAllPublicPostRoute = createRoute({
 		200: {
 			content: {
 				"application/json": {
-					schema: z.array(postSchema),
+					schema: z.array(postSchemaResponse),
 				},
 			},
 			description: "Retrieve a public post",

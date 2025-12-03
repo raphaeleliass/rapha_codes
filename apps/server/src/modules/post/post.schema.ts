@@ -18,6 +18,7 @@ export const postSchema = z
 		draft: z
 			.boolean("Field draFt must be a boolean")
 			.nonoptional("Field draFt cannot be null"),
+		userId: z.uuid().nonempty(),
 	})
 	.openapi("Post schema");
 
@@ -30,6 +31,7 @@ export const updatePostSchema = postSchema
 	.partial()
 	.extend({
 		id: postSchema.shape.id,
+		userId: postSchema.shape.userId,
 	})
 	.strict()
 	.openapi("Update post schema");
