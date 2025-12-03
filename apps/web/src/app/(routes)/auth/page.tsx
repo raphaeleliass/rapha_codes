@@ -1,9 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader } from "lucide-react";
+import { Eye, EyeClosed, Loader } from "lucide-react";
 import { redirect, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useFormState } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -37,6 +37,7 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 export default function Page() {
+	const [isPasswordVisible, setPasswordVisisble] = useState<boolean>(false);
 	const { setUser, user } = useUserStore();
 	const router = useRouter();
 
@@ -83,6 +84,10 @@ export default function Page() {
 		);
 	}
 
+	function togglePasswordVisibility() {
+		setPasswordVisisble((prev) => !prev);
+	}
+
 	return (
 		<div className="min-h-dvh w-full place-content-center justify-items-center">
 			<Card className="w-full max-w-sm">
@@ -109,6 +114,8 @@ export default function Page() {
 
 														<FormControl>
 															<Input
+																type="email"
+																autoComplete="off"
 																placeholder="Digite seu email"
 																{...field}
 																disabled={isSubmitting}
@@ -130,11 +137,26 @@ export default function Page() {
 														<FormLabel>Senha</FormLabel>
 
 														<FormControl>
-															<Input
-																placeholder="Digite sua senha"
-																{...field}
-																disabled={isSubmitting}
-															/>
+															<div className="relative flex items-center">
+																<Input
+																	type={isPasswordVisible ? "text" : "password"}
+																	autoComplete={"off"}
+																	placeholder="Digite sua senha"
+																	{...field}
+																	disabled={isSubmitting}
+																/>
+																<button
+																	type="button"
+																	onClick={togglePasswordVisibility}
+																	className="absolute right-2 p-1"
+																>
+																	{isPasswordVisible ? (
+																		<EyeClosed size={20} />
+																	) : (
+																		<Eye size={20} />
+																	)}
+																</button>
+															</div>
 														</FormControl>
 
 														<FormMessage />
