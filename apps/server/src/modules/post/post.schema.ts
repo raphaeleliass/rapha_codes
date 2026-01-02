@@ -23,7 +23,7 @@ export const postSchema = z
 	.openapi("Post schema");
 
 export const createPostSchema = postSchema
-	.omit({ id: true })
+	.omit({ id: true, userId: true })
 	.strict()
 	.openapi("Create post schema");
 
@@ -31,7 +31,6 @@ export const updatePostSchema = postSchema
 	.partial()
 	.extend({
 		id: postSchema.shape.id,
-		userId: postSchema.shape.userId,
 	})
 	.strict()
 	.openapi("Update post schema");

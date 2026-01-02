@@ -26,10 +26,16 @@ export class PostRepository {
 		this.db = db;
 	}
 
-	createPost = async (postData: TypeCreatePost) => {
+	createPost = async ({
+		postData,
+		userId,
+	}: {
+		postData: TypeCreatePost;
+		userId: string;
+	}) => {
 		const [newPost] = await this.db
 			.insert(post)
-			.values({ ...postData })
+			.values({ ...postData, userId })
 			.returning(returningPost);
 
 		return newPost;

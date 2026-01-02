@@ -14,11 +14,11 @@ export class PostService {
 		this.postRepository = postRepository;
 	}
 
-	createPost = async (userId: string, postValues: TypeCreatePost) => {
+	createPost = async (userId: string, postData: TypeCreatePost) => {
 		if (!userId)
 			throw new HTTPException(400, { message: "Missing userId field" });
 
-		const post = await this.postRepository.createPost(userId, postValues);
+		const post = await this.postRepository.createPost({ postData, userId });
 		return post;
 	};
 
